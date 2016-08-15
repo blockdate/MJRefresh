@@ -22,4 +22,12 @@
 
 /** 忽略多少scrollView的contentInset的top */
 @property (assign, nonatomic) CGFloat ignoredScrollViewContentInsetTop;
+/**
+ *  @author block
+ *
+ *  启动下拉动作，但是不会调用下拉的target:Action或者block
+ *
+ *  @since 1.0
+ */
+- (void)beginRefreshingWithoutCallBack;
 @end

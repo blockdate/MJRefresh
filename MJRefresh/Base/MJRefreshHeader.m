@@ -11,6 +11,7 @@
 
 @interface MJRefreshHeader()
 @property (assign, nonatomic) CGFloat insetTDelta;
+@property (nonatomic, assign) BOOL useCallBack;
 @end
 
 @implementation MJRefreshHeader
@@ -19,15 +20,20 @@
 {
     MJRefreshHeader *cmp = [[self alloc] init];
     cmp.refreshingBlock = refreshingBlock;
+    cmp.useCallBack = YES;
     return cmp;
 }
 + (instancetype)headerWithRefreshingTarget:(id)target refreshingAction:(SEL)action
 {
     MJRefreshHeader *cmp = [[self alloc] init];
     [cmp setRefreshingTarget:target refreshingAction:action];
+    cmp.useCallBack = YES;
     return cmp;
 }
-
+- (void)beginRefreshingWithoutCallBack {
+    self.useCallBack = NO;
+    [super beginRefreshing];
+}
 #pragma mark - 覆盖父类的方法
 - (void)prepare
 {
@@ -132,7 +138,11 @@
                 // 设置滚动位置
                 [self.scrollView setContentOffset:CGPointMake(0, -top) animated:NO];
             } completion:^(BOOL finished) {
-                [self executeRefreshingCallback];
+                if(self.useCallBack) {
+                    [self executeRefreshingCallback];
+                }else {
+                    self.useCallBack = YES;
+                }
             }];
          });
     }
