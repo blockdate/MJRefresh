@@ -34,6 +34,12 @@
     self.useCallBack = NO;
     [super beginRefreshing];
 }
+
+- (void)beginRefreshing {
+    self.useCallBack = YES;
+    [super beginRefreshing];
+}
+
 #pragma mark - 覆盖父类的方法
 - (void)prepare
 {
